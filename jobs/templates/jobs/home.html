@@ -1,0 +1,248 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Green Minds</title>
+    <link rel="icon" href="{% static 'jobs/media/logo.png' %}" type="image/icon type">
+    <link rel="stylesheet" href="{% static 'jobs/css/style.css' %}">
+  </head>
+  <body>
+    <header>
+      <div class="logo" >
+        <a href="{% url 'home' %}"><img src="{% static 'jobs/media/logo.png' %}" alt="My Logo"></a>
+
+      </div>
+      <nav>
+        <ul>
+          {% if user.is_authenticated %}
+            {% if user.get_freelancer %}
+              <li class="username"> <a class="username" href="{% url 'profile' %}" style="color: black;"> {{user.get_freelancer.name}}  </a> </li>
+            {% elif user.get_business %}
+            <li class="username"> <a class="username" href="{% url 'profile' %}" style="color: black;"> {{user.get_business.name}}  </a> </li>
+            {% endif %}
+            <li><a class="signOut" href="{% url 'messages-page' %}" style="color: white; background-color: black;"> Messages  </a></div>
+            <li><a class="signOut" href="{% url 'account_logout' %}" style="color: white;"> Sign out  </a></div>
+          {% else %}
+          <li class="signIn"><a href="{% url 'account_login' %}" style="color: #2d6a4f;">Sign in</a></li>
+          <li class="signUp"><a href="{% url 'account_signup' %}" style="color: white;">Sign up</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Connecting Talent to Opportunity: Bringing Skills and Services Together!
+        </h1>
+        <form class="search-form" action="{% url 'search-results' %}">
+          {% csrf_token %}
+          <input type="text" placeholder="Search..." name="searched_query">
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      <div class="hero-image">
+        <img src="{% static 'jobs/media/freelancing.webp' %}" alt="Hero Image">
+      </div>
+    </section>
+    
+    <section class="freelancers">
+      <h2>Projects</h2>
+      {% if searched_query %}
+      <h3>The results for {{ searched_query }} in projects: </h3>
+      {% for project in projects%}
+      <div class="category">
+        {% if project.owner.profile_pic %}
+        <img src="{{ project.owner.profile_pic.url }}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+        {% else %}
+        <img src="{% static 'jobs/media/project.png' %}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+        {% endif %}
+        <h3>{{ project.name }}</h3>
+        <p>{{ project.owner.name }}</p>
+        <a href="{% url 'view-business-profile' project.owner.id %}">View Project</a>
+      </div>
+      {% endfor %}
+      {% else %}
+        {% for project in projects%}
+        <div class="category">
+          {% if project.owner.profile_pic %}
+          <img src="{{ project.owner.profile_pic.url }}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+          {% else %}
+          <img src="{% static 'jobs/media/project.png' %}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+          {% endif %}
+          <h3>{{ project.name }}</h3>
+          <p>{{ project.owner.name }}</p>
+          <a href="{% url 'project-profile' project.id %}">View Project</a>
+        </div>
+        {% endfor %}
+        <div class="view-more">
+          <a href="{% url 'project-list' %}">View More</a>
+        </div>
+      {% endif %}
+    </section>
+
+    <section class="freelancers">
+      <h2>Freelancers</h2>
+      {% if searched_query %}
+      <h3>The results for {{ searched_query }} in freelancer profiles: </h3>
+      {% for freelancer in freelancers%}
+        <div class="category">
+          {% if freelancer.profile_pic %}
+          <img src="{{ freelancer.profile_pic.url }}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+          {% else %}
+          <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+          {% endif %}
+          <h3>{{ freelancer.name }}</h3>
+          <p>{{ freelancer.about }}</p>
+          <a href="{% url 'view-freelancer-profile' freelancer.id %}">View Freelancer</a>
+        </div>
+        {% endfor %}
+      {% else %}
+        {% for freelancer in freelancers%}
+        <div class="category">
+          {% if freelancer.profile_pic %}
+          <img src="{{ freelancer.profile_pic.url }}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+          {% else %}
+          <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+          {% endif %}
+          <h3>{{ freelancer.name }}</h3>
+          <p>{{ freelancer.about }}</p>
+          <a href="{% url 'view-freelancer-profile' freelancer.id %}">View Freelancer</a>
+        </div>
+        {% endfor %}
+        <div class="view-more">
+          <a href="{% url 'freelancers-list' %}">View More</a>
+        </div>
+      {% endif %}
+    </section>
+    
+    
+    <section class="categories">
+      <h2>Businesses</h2>
+      {% if searched_query %}
+        <h3>The results for {{ searched_query }} in business profiles: </h3>
+        {% for business in businesses %}
+        <div class="category">
+          {% if business.profile_pic %}
+          <img src="{{ business.profile_pic.url }}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+          {% else %}
+          <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+          {% endif %}
+          <h2>{{business.name}}</h2>
+          <p>{{ business.about }}</p>
+          <a href="{% url 'view-business-profile' business.id %}">View Business</a>
+        </div>
+        {% endfor %}
+      {% else %}
+        {% for business in businesses %}
+        <div class="category">
+          {% if business.profile_pic %}
+          <img src="{{ business.profile_pic.url }}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+          {% else %}
+          <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="profile-picture" style="max-height: max-content; max-width: max-content;">
+          {% endif %}
+          <h2>{{business.name}}</h2>
+          <p>{{ business.about }}</p>
+          <a href="{% url 'view-business-profile' business.id %}">View Business</a>
+        </div>
+        {% endfor %}
+        <div class="view-more">
+          <a href="{% url 'business-list' %}">View More</a>
+        </div>
+      {% endif %}
+
+    </section>
+
+    <section class="FAQ">
+      <p style="text-align: center;"> You can get the answer of most frequent questions here:  <a href="{% url 'FAQ' %}" style="text-decoration: none;"> <strong>FAQ</strong> </a></p>
+    </section>
+      <footer class="footer">
+        <div class="footer__addr">
+          <h1 class="footer__logo">Green Minds</h1>
+              
+          <h2>Contact</h2>
+          
+          <address>
+  Concordia University              
+            <a class="footer__btn" href="mailto:greenminds@gmail.com">Email Us</a>
+          </address>
+        </div>
+        
+        <ul class="footer__nav">
+          <li class="nav__item">
+            <h2 class="nav__title">Social Media</h2>
+      
+            <ul class="nav__ul">
+              <li>
+                <a href="#">Twitter</a>
+              </li>
+      
+              <li>
+                <a href="#">Facebook</a>
+              </li>
+                  
+              <li>
+                <a href="#">LinkedIn</a>
+              </li>
+            </ul>
+          </li>
+          
+          <li class="nav__item nav__item--extra">
+            <h2 class="nav__title">Freelancer</h2>
+            
+            <ul class="nav__ul nav__ul--extra">
+              <li>
+                <a href="#">Categories</a>
+              </li>
+              
+              <li>
+                <a href="#">Projects</a>
+              </li>
+              
+              <li>
+                <a href="#">Contests</a>
+              </li>
+              
+              <li>
+                <a href="#">Membership</a>
+              </li>
+              
+              <li>
+                <a href="#">Freelancers</a>
+              </li>
+              
+              <li>
+                <a href="#">Enterprise</a>
+              </li>
+            </ul>
+          </li>
+          
+          <li class="nav__item">
+            <h2 class="nav__title">Legal</h2>
+            
+            <ul class="nav__ul">
+              <li>
+                <a href="#">Privacy Policy</a>
+              </li>
+              
+              <li>
+                <a href="#">Terms of Use</a>
+              </li>
+              
+              <li>
+                <a href="#">Fees and Charges</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        
+        <div class="legal">
+          <p>&copy; Winter 2023. All rights reserved.</p>
+          
+          <div class="legal__links">
+            <span>Made by <span class="heart">♥</span> Green Minds Group</span>
+          </div>
+        </div>
+      </footer>
+  </body>
+</html>
+

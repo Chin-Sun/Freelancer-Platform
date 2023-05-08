@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Profile</title>
+    <link rel="icon" href="{% static 'jobs/media/logo.png' %}" type="image/icon type">
+	<link rel="stylesheet" type="text/css" href="{% static 'jobs/css/profile.css' %}">
+</head>
+<body>
+	<h1>Create your Profile</h1>
+	<div class="button-container">
+		<a href="{% url 'freelancer-create'%}"><button class="freelancer-button">I am a freelancer!</button></a>
+		<a href="{% url 'business-create' %}"><button class="employer-button">I am an employer!</button></a>
+	</div>
+</body>
+</html>

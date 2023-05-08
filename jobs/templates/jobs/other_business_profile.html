@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ business.name }}</title>
+    <link rel="icon" href="{% static 'jobs/media/logo.png' %}" type="image/icon type">
+	<link rel="stylesheet" type="text/css" href="{% static 'jobs/css/business.css' %} ">
+</head>
+<body>
+	<div class="header">
+		<div style="padding-left: 2%;"><a class="text-light" href="{% url 'home' %}" style="text-decoration: none; color: aliceblue;">Home</a></div>
+		<div><a style="color: black; background-color: white;" class="fcc-btn" href="{% url 'business-report' business.id %}">Report Page</a></div>
+	</div>
+
+	<div class="profile">
+		{% if business.profile_pic %}
+        <img src="{{ business.profile_pic.url }}" alt="Profile Picture" class="profile-picture">
+        {% else %}
+        <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="profile-picture">
+        {% endif %}
+		<h2>{{business.name}}</h2>
+	</div>
+
+    <div class="profile-info">
+		{% if user.is_authenticated %}
+			<div style="padding-bottom: 1%"><a style="color: white; background-color: #2d6a4f;" class="fcc-btn" href="{% url 'messages-to' business.owner.id %}">Message</a></div>
+        {% endif %}
+		<h4 class="contact-info">E-Mail: </h4>
+        <p>{{ business.owner.email }}</p>
+		<h4> About: </h4>
+        <p>{{ business.about }}</p>
+    </div>
+
+	<div class="score">
+		<h2>Score</h2>
+		<div class="stars">
+			<span class="star">&#9733;</span>
+			<span class="star">&#9733;</span>
+			<span class="star">&#9733;</span>
+			<span class="star">&#9733;</span>
+			<span class="star">&#9734;</span>
+		</div>
+	</div>
+
+	<div class="project-list">
+		<h2>Completed Project List</h2>
+		<ul>
+			{% for project in projects %}
+			{% if project.is_complete %}
+				<li> <a href="{% url 'project-profile' project.id %}">{{ project.name }} | {{ project.category }}</a> </li>
+			{% endif %}
+			{% endfor %}	
+		</ul>
+
+		<h2 style="padding-top: 2%;">Available Project List</h2>
+		<ul>
+			{% for project in projects %}
+			{% if not project.is_complete %}
+				<li> <a href="{% url 'project-profile' project.id %}">{{ project.name }} | {{ project.category }}</a> </li>
+			{% endif %}
+			{% endfor %}	
+		</ul>
+	</div>
+
+</body>
+</html>

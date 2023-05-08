@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{freelancer.name}}</title>
+  <link rel="icon" href="{% static 'jobs/media/logo.png' %}" type="image/icon type">
+	<link rel="stylesheet" type="text/css" href="{% static 'jobs/css/freelancer.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="header">
+      <div style="padding-left: 2%;"><a class="text-light" href="{% url 'home' %}" style="text-decoration: none; color: aliceblue;">Home</a></div>
+      <div><a style="color: black; background-color: white;" class="fcc-btn" href="{% url 'freelancer-report' freelancer.id %}">Report</a></div>
+    </div>
+
+    <div class="profile-container">
+      <div class="profile-section">
+        <h2>Profile Picture</h2>
+        {% if freelancer.profile_pic %}
+          <img src="{{ freelancer.profile_pic.url }}" alt="Profile Picture" class="profile-picture">
+		      {% if user.is_authenticated %}
+    		    <div style="padding-bottom: 1%"><a style="color: white; background-color: #2d6a4f;" class="fcc-btn" href="{% url 'messages-to' freelancer.owner.id %}">Message</a></div>
+          {% endif %}
+        {% else %}
+          <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="profile-picture">
+          {% if user.is_authenticated %}
+            <div style="padding-bottom: 1%"><a style="color: white; background-color: #2d6a4f;" class="fcc-btn" href="{% url 'messages-to' freelancer.owner.id %}">Message</a></div>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="profile-section">
+        <h2>Avg rating</h2>
+        <div class="card-body">
+          <h5 class="card-title">
+            <span class="fa fa-star {% if freelancer.average_rating > 0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if freelancer.average_rating > 1 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if freelancer.average_rating > 2 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if freelancer.average_rating > 3 %} checked {% endif %}" ></span>
+            <span class="fa fa-star {% if freelancer.average_rating > 4 %} checked {% endif %}"></span>
+          </h5>
+          {% if elligible %}
+          <ul class="btn btn-light list-inline rating-list">
+            <li onclick="rate(5, {{freelancer.id}})">
+              <i class="fa fa-star {% if freelancer.user_rating > 4 %} checked {% endif %}" title="Rate 5"></i></li>
+            <li onclick="rate(4, {{freelancer.id}})">
+                <i class="fa fa-star {% if freelancer.user_rating > 3 %} checked {% endif %}" title="Rate 4"></i></li>
+            <li onclick="rate(3, {{freelancer.id}})">
+                <i class="fa fa-star {% if freelancer.user_rating > 2 %} checked {% endif %}" title="Rate 3"></i></li>
+            <li onclick="rate(2, {{freelancer.id}})">
+                <i class="fa fa-star {% if freelancer.user_rating > 1 %} checked {% endif %}" title="Rate 2"></i></li>
+            <li onclick="rate(1, {{freelancer.id}})">
+                <i class="fa fa-star {% if freelancer.user_rating > 0 %} checked {% endif %}" title="Rate 1"></i></li>
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <h2>Username</h2>
+        <p>{{ freelancer.name }}</p>
+      </div>
+      <div class="profile-section">
+        <h2>E-mail: </h2>
+        <p>{{ freelancer.owner.email }}</p>
+      </div>
+
+      <div class="profile-section">
+        <h2>Projects</h2>
+        {% if projects|length > 3 %}
+          <p>{{ projects|length }}</p>
+        {% elif projects|length == 0%}
+          <p>0</p>
+        {% else %}
+          {% for project in projects %}
+            {% if project.is_complete %}
+              <p> {{ project.name }} | completed </p>
+            {% else %}
+              <p> {{ project.name }} | in progress </p>
+            {% endif %}
+          {% endfor %}
+        {% endif  %}
+      </div>
+      <div class="profile-section">
+        <h2>Join Date</h2>
+        <p>{{ freelancer.joinedDate|date }}</p>
+      </div>
+      <div class="profile-section">
+        <h2>Skills</h2>
+        <p> {{ freelancer.skills }} </p>
+      </div>
+      <div class="profile-section">
+        <h2>About Me</h2>
+        <p>{{freelancer.about}}</p>
+      </div>
+    </div>
+    <script>
+      const rate = (rating, profile_id) => {
+          fetch(`/rate/${profile_id}/${rating}/`, {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          }).then(rest => {
+              window.location.reload();
+          })
+      }
+    </script>
+  </body>
+  </html>

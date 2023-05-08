@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Profile</title>
+  <link rel="icon" href="{% static 'jobs/media/logo.png' %}" type="image/icon type">
+	<link rel="stylesheet" type="text/css" href="{% static 'jobs/css/freelancer.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="header">
+      <div style="padding-left: 2%;"><a class="text-light" href="{% url 'home' %}" style="text-decoration: none; color: aliceblue;">Home</a></div>
+      <div style="width: 14%;">
+        <div style="float: left;"><a style="color: black; background-color: white;" class="fcc-btn" href="{% url 'freelancer-report' freelancer.id %}">Report</a></div>
+        <div style="float: right;"><a class="fcc-btn" href="{% url 'update-freelancer' %}">Update Profile</a></div>
+      </div>
+
+    </div>
+
+    <div class="profile-container">
+      <div class="profile-section">
+        <h2>Profile Picture</h2>
+        {% if freelancer.profile_pic %}
+        <img src="{{ freelancer.profile_pic.url }}" alt="Profile Picture" class="profile-picture">
+        {% else %}
+        <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="profile-picture">
+        {% endif %}
+      </div>
+
+      <div class="profile-section">
+        <h2>Avg rating</h2>
+        <div class="card-body">
+          <h5 class="card-title">
+            <span class="fa fa-star {% if freelancer.average_rating > 0 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if freelancer.average_rating > 1 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if freelancer.average_rating > 2 %} checked {% endif %}"></span>
+            <span class="fa fa-star {% if freelancer.average_rating > 3 %} checked {% endif %}" ></span>
+            <span class="fa fa-star {% if freelancer.average_rating > 4 %} checked {% endif %}"></span>
+          </h5>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <h2>Username</h2>
+        <p>{{ freelancer.name }}</p>
+      </div>
+      
+      <div class="profile-section">
+        <h2>E-mail: </h2>
+        <p>{{ user.email }}</p>
+      </div>
+
+      <div class="profile-section">
+        <h2>Projects</h2>
+        {% if projects|length > 3 %}
+          <p>{{ projects|length }}</p>
+        {% elif projects|length == 0%}
+          <p>0</p>
+        {% else %}
+          {% for project in projects %}
+            {% if project.is_complete %}
+              <p> {{ project.name }} | completed </p>
+            {% else %}
+              <p> {{ project.name }} | in progress </p>
+            {% endif %}
+          {% endfor %}
+        {% endif  %}
+      </div>
+      <div class="profile-section">
+        <h2>Join Date</h2>
+        <p>{{ freelancer.joinedDate|date }}</p>
+      </div>
+      <div class="profile-section">
+        <h2>Skills</h2>
+        <p> {{ freelancer.skills }} </p>
+      </div>
+      <div class="profile-section">
+        <h2>About Me</h2>
+        <p>{{freelancer.about}}</p>
+      </div>
+      <!-- <div class="profile-section">
+        <h2>Certifications</h2>
+        <p>{{ freelancer.certifications}}</p>
+      </div> -->
+
+      <div class="profile-section">
+        <form action="{% url 'send-invitation' %}">
+          {% csrf_token %}
+          <div class="input">
+            <input placeholder="your friend's email" type="text" id="input" name="invitation">
+          </div>
+          <button class="invite-button" type="submit">Invite Friends</button>
+        </form>
+      </div>
+      <!-- <div class="profile-section">
+        <button class="my-dashboard">My Dashboard</button>
+      </div>  -->
+    </div>
+  </body>
+  </html>

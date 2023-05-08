@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Freelancer Profile History Report</title>
+	<link rel="icon" href="{% static 'jobs/media/logo.png' %}" type="image/icon type">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<style>
+		.header {
+			background-color: #081c15;
+			color: #fff;
+			padding: 20px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			height: 4%;
+		}
+		.fcc-btn {
+			background-color: #40916c;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			text-decoration: none;
+			padding: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		<div style="padding-left: 2%;"><a class="text-light" href="{% url 'home' %}" style="text-decoration: none; color: aliceblue;">Home</a></div>
+		{% if user.is_authenticated and user.get_freelancer and user.id == freelancer.id %}
+			<div style="float: right;"><a class="fcc-btn" href="{% url 'profile' %}"> My profile</a></div> 
+		{% else %}
+			<div style="float: right;"><a class="fcc-btn" href="{% url 'view-freelancer-profile' freelancer.id%}"> {{freelancer.name}} profile</a></div> 
+		{% endif %}
+	</div>
+	<div class="container mt-5">
+		<h1>Freelancer Profile History Report</h1>
+		<h6 style="margin-top: 2%; margin-bottom: 2%;"> Last log in: {{freelancer.owner.last_login}}</h6>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Project Description</th>
+					<th>Due Date</th>
+					<th>Status</th>
+					{% if user.get_freelancer and user.get_freelancer == freelancer %}
+						<th>Change Status</th>
+					{% endif %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for project in projects %}
+					<tr>
+						<td> {{ project.name }} </td>
+						<td> <strong>business owner:</strong> {{project.owner.name }} - <strong>category:</strong> {{ project.category }} - <strong>programming language:</strong> {{ project.programming_languages}}</td>
+						<td> {{ project.due_date }} </td>
+						{% if project.is_complete %}
+							<td> Completed </td>
+							{% if user.get_freelancer and user.get_freelancer == freelancer %}
+								<td><button onclick="change_status({{freelancer.id}}, {{project.id}}, 0)">Continue</button></td>
+							{% endif %}
+						{% else %}
+							<td> In progress </td>
+							{% if user.get_freelancer and user.get_freelancer == freelancer %}
+								<td><button onclick="change_status({{freelancer.id}}, {{project.id}}, 1)">Complete</button></td>
+							{% endif %}
+						{% endif %}
+					</tr>	
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<script>
+		const change_status = (profile_id , project_id, new_status) => {
+			fetch(`/change-status/${profile_id}/${project_id}/${new_status}/`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(rest => {
+				window.location.reload();
+			})
+		}
+	  </script>
+</body>
+</html>

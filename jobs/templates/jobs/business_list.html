@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Business Page</title>
+    <link rel="icon" href="{% static 'jobs/media/logo.png' %}" type="image/icon type">
+
+    <style>
+      /* CSS styles */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1%;
+        background-color: #d8f3dc;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+        height: 10%;
+      }
+
+      .search-form {
+          float: right;
+          display: inline-block;
+          margin-right: 20px;
+          margin-top: 10px;
+      }
+
+      h1 {
+          color: #d8f3dc;
+          display: inline-block;
+          font-size: 32px;
+          margin: 0;
+      }
+      .logo img {
+        height: 60px;
+        padding-left: 4%;
+    }
+
+      form {
+        margin: 20px 0;
+        text-align: center;
+      }
+      input[type="text"] {
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 250px;
+      }
+      button[type="submit"] {
+        padding: 8px 12px;
+        border-radius: 5px;
+        border: none;
+        background-color: #2d6a4f;
+        color: white;
+        cursor: pointer;
+        margin-left: 5px;
+      }
+      ul {
+          list-style: none;
+          margin: auto;
+          background-color: #d8f3dc;
+          color: navy;
+          margin-top: 70px;
+          padding: 20px;
+          width: 60%;
+      }
+      li {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+      li strong {
+        font-size: 18px;
+      }
+      .profile {
+          margin-bottom: 100px;
+      }
+      .infor{
+          padding: 20px;
+          margin-left: 160px;
+      }
+      li a {
+        color: #2d6a4f;
+        text-decoration: none;
+      }
+      li a:hover {
+        text-decoration: underline;
+      }
+      .ImageThumbnail-image {
+          margin-top: 15px;
+          float: left;
+          border-radius: inherit;
+          display: block;
+          overflow: hidden;
+          height: 100px;
+          width: 140px;
+      }
+      .profileimage{
+          margin-left: 1700px;
+          margin-top: -100px;
+          border-radius: inherit;
+          display: block;
+          overflow: hidden;
+      }
+      .ImageThumbnail{
+          border-radius: inherit;
+          display: block;
+          overflow: hidden;
+          height: 100px;
+          width: 140px;
+      }
+    </style>
+  </head>
+  <body>
+  <header>
+    <div class="logo" >
+      <a href="{% url 'home' %}"><img src="{% static 'jobs/media/logo.png' %}" alt="My Logo"></a>
+  </div>
+      <form class="search-form" method="get">
+          <!-- <span style="display: inline-block; color: #d8f3dc; font-size: 20px">Business Account</span>
+          <input type="text" name="search" placeholder="Search..."> -->
+          {{myFilter.form}}
+          <button type="submit">Search</button>
+      </form>
+  </header>
+  <ul >
+      {% for user in object_list %}
+          <li style="width: 100%; box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);">
+            {% if user.profile_pic %}
+            <img src="{{ user.profile_pic.url }}" alt="Profile Picture" class="ImageThumbnail-image">
+            {% else %}
+            <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="ImageThumbnail-image">
+            {% endif %}
+              <div class="infor"><strong>{{ user.name }}</strong></div>
+              <div class="infor">({{ user.owner.email }})</div>
+              <div class="infor">({{ user.about }})</div>
+              <div class="infor"><a href="{% url 'view-business-profile' user.id %}" class="profile" style="float: right;">View Profile</a></div>
+              
+          </li>
+      {% endfor %}
+  </ul>
+  </body>
+</html>
+

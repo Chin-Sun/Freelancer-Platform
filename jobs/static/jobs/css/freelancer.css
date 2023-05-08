@@ -1,0 +1,169 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+	background-color: #d8f3dc;
+	color: #333;
+}
+
+  /* Header */
+.header {
+	background-color: #081c15;
+	color: #fff;
+	padding: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	height: 4%;
+}
+
+  h1 {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .profile-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+  }
+  
+  .profile-section {
+    background-color: #F7F7F7;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+  }
+  
+  .profile-section h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .profile-section p {
+    font-size: 18px;
+  }
+  
+  .update-button {
+    background-color: #40916c;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  
+  .update-button:hover {
+    background-color: #40916c;
+  }
+  
+  .star-rating {
+    font-size: 36px;
+    color: #FFD700;
+  }
+  
+  .checked {
+    color: orange;
+  }
+  
+  .profile-picture {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
+  
+  #profile-picture-input {
+    display: none;
+  }
+  
+  .invite-button {
+    background-color: #40916c;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  
+  .invite-button:hover {
+    background-color: #52b788;
+  }
+  
+.my-dashboard{
+    background-color: #40916c;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.fcc-btn {
+  background-color: #40916c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 10px;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,regular,italic,500,500italic,700,700italic,900,900italic);
+.input {
+  width: 100%;
+  position: relative;
+}
+
+.imput label {
+  font-size: 18px;
+  background-color: #fff;
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  font-weight: 700;
+  padding: 0 7px;
+  transition: 0.3s;
+}
+
+#input {
+  width: 80%;
+  padding: 10px 15px;
+  font-size: 12px;
+  border: 2px solid #000;
+  border-radius: 5px;
+}
+
+.input.focus label {
+  font-size: 16px;
+  top: -10px;
+  left: 10px;
+}
+
+
+.rating-list li {
+	float: right;
+	color: #ddd;
+	padding: 10px 5px;
+  }
+
+  .rating-list li:hover,
+  .rating-list li:hover ~ li {
+	color: orange;
+  }
+
+  .rating-list {
+	display: inline-block;
+	list-style: none;
+  }
+  .checked {
+	  color: orange;
+  }

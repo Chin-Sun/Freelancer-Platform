@@ -1,0 +1,249 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Chat</title>
+        <link rel="icon" href="{% static 'chat/media/logo.png' %}" type="image/icon type">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+
+        <link rel="stylesheet" href="{% static 'chat/css/messages.css' %}">
+        <link rel="stylesheet" href="{% static 'jobs/css/freelancer.css' %}">
+
+    </head>
+	<!--Coded With Love By Mutiullah Samim-->
+	<body>
+        <div class="header">
+            <div style="padding-left: 2%;"><a class="text-light" href="{% url 'home' %}" style="text-decoration: none; color: aliceblue;">Home</a></div>
+            <div style="width: 20%;">
+                {% if user.is_authenticated %}
+                {% if user.get_freelancer %}
+                    <h6 style="text-align: center; padding-right: 10px;">{{user.get_freelancer.name}}'s Inbox </h6>
+                {% elif user.get_business %}
+                    <h6 style="text-align: center; padding-right: 10px">{{user.get_business.name}}'s Inbox </h6>
+                {% endif %}
+                <input type="hidden" id="logged-in-user" value="{{ user.id }}">
+                {% endif %}
+            </div>
+        </div>
+
+		<div class="container-fluid h-100">
+			<div class="row justify-content-center h-100 ">
+				<div class="col-md-4 col-xl-3 chat h-100 mt-4">
+                    <div class="card mb-sm-3 mb-md-0 contacts_card">
+					<div class="card-header">
+						<div class="input-group">
+							<input type="text" placeholder="Search..." name="" class="form-control search">
+							<div class="input-group-prepend">
+								<span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="card-body contacts_body">
+						<ui class="contacts">
+                            {% for thread in Threads %}
+                                <li class="{% if forloop.first %}active{% endif %} contact-li" chat-id="chat_{{ thread.id }}" style="cursor: pointer">
+                                    <div class="d-flex bd-highlight">
+                                        <div class="img_cont">
+                                            {% if thread.first_person == user %}
+                                                {% if thread.second_person.get_freelancer.profile_pic  %}
+                                                    <img src="{{  thread.second_person.get_freelancer.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img">
+                                                {% elif thread.second_person.get_business.profile_pic  %}
+                                                    <img src="{{  thread.second_person.get_business.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img">
+                                                {% else %}
+                                                    <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="rounded-circle user_img">
+                                                {% endif %}
+                                            {% else %}
+                                                {% if thread.first_person.get_freelancer.profile_pic  %}
+                                                    <img src="{{  thread.first_person.get_freelancer.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img">
+                                                {% elif thread.second_person.get_business.profile_pic  %}
+                                                    <img src="{{  thread.first_person.get_business.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img" >
+                                                {% else %}
+                                                    <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="rounded-circle user_img">
+                                                {% endif %}
+                                            {% endif %}
+                                            <span class="online_icon"></span>
+                                        </div>
+                                        <div class="user_info">
+                                            {% if thread.first_person == user %}
+                                                {% if thread.second_person.get_freelancer %}
+                                                    <span>{{ thread.second_person.get_freelancer.name }}</span>
+                                                {% else %}
+                                                    <span>{{ thread.second_person.get_business.name }}</span>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if thread.first_person.get_freelancer %}
+                                                    <span>{{ thread.first_person.get_freelancer.name }}</span>
+                                                {% else %}
+                                                    <span>{{ thread.first_person.get_business.name }}</span>
+                                                {% endif %}
+                                            {% endif %}
+
+{#                                            <p>Kalid is online</p>#}
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+						</ui>
+					</div>
+					<div class="card-footer"></div>
+				</div></div>
+				<div class="col-md-8 col-xl-6 chat h-100 mt-4">
+					<div class="card">
+                        {% for thread in Threads %}
+                            <div class="messages-wrapper  {% if forloop.first %}hide is_active{% else %}hide{% endif %}" chat-id="chat_{{ thread.id }}" other-user-id="
+                                        {% if thread.first_person == user %}
+                                            {{ thread.second_person.id }}
+                                        {% else %}
+                                            {{ thread.first_person.id }}
+                                        {% endif %}
+                                    ">
+                                <div class="card-header msg_head">
+                                    <div class="d-flex bd-highlight">
+                                        <div class="img_cont">
+                                            {% if thread.first_person == user %}
+                                                {% if thread.second_person.get_freelancer.profile_pic  %}
+                                                    <img src="{{  thread.second_person.get_freelancer.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img">
+                                                {% elif thread.second_person.get_business.profile_pic  %}
+                                                    <img src="{{  thread.second_person.get_business.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img">
+                                                {% else %}
+                                                    <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="rounded-circle user_img">
+                                                {% endif %}
+                                            {% else %}
+                                                {% if thread.first_person.get_freelancer.profile_pic  %}
+                                                    <img src="{{  thread.first_person.get_freelancer.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img">
+                                                {% elif thread.second_person.get_business.profile_pic  %}
+                                                    <img src="{{  thread.first_person.get_business.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img" >
+                                                {% else %}
+                                                    <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="rounded-circle user_img">
+                                                {% endif %}
+                                            {% endif %}
+                                            <span class="online_icon"></span>
+                                        </div>
+                                        <div class="user_info">
+                                            {% if thread.first_person == user %}
+                                                {% if thread.second_person.get_business %}
+                                                    <span>Chat with {{ thread.second_person.get_business.name }}</span>
+                                                {% else %}
+                                                    <span>Chat with {{ thread.second_person.get_freelancer.name }}</span>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if thread.first_person.get_business %}
+                                                    <span>Chat with {{ thread.first_person.get_business.name }}</span>
+                                                {% else %}
+                                                    <span>Chat with {{ thread.first_person.get_freelancer.name }}</span>
+                                                {% endif %}
+                                            {% endif %}
+
+                                            <p>{{ thread.chatmessage_thread.all.count }} messages</p>
+                                        </div>
+                                        <div class="video_cam">
+                                            <span><i class="fas fa-video"></i></span>
+                                            <span><i class="fas fa-phone"></i></span>
+                                        </div>
+                                    </div>
+                                    <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+                                    <div class="action_menu">
+                                        <ul>
+                                            <li><i class="fas fa-user-circle"></i> View profile</li>
+                                            <li><i class="fas fa-users"></i> Add to close friends</li>
+                                            <li><i class="fas fa-plus"></i> Add to group</li>
+                                            <li><i class="fas fa-ban"></i> Block</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="card-body msg_card_body">
+                                    <!------- messages ------->
+                                    {% for chat in thread.chatmessage_thread.all %}
+                                        {% if chat.user == user %}
+                                            <div class="d-flex mb-4 replied">
+                                                <div class="msg_cotainer_send">
+                                                    {{ chat.message }}
+                                                    <span class="msg_time_send">{{ chat.timestamp|date:"d D" }}, {{ chat.timestamp|time:"H:i" }}</span>
+                                                </div>
+                                            <div class="img_cont_msg">
+                                                {% if thread.first_person == user %}
+                                                    {% if thread.first_person.get_freelancer.profile_pic  %}
+                                                        <img src="{{  thread.first_person.get_freelancer.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img" style="max-width: 50px; max-height: 50px;">
+                                                    {% elif thread.second_person.get_business.profile_pic  %}
+                                                        <img src="{{  thread.first_person.get_business.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img" >
+                                                    {% else %}
+                                                        <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="rounded-circle user_img" style="max-width: 50px; max-height: 50px;">
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if thread.second_person.get_freelancer.profile_pic  %}
+                                                        <img src="{{  thread.second_person.get_freelancer.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img" style="max-width: 50px; max-height: 50px;">
+                                                    {% elif thread.second_person.get_business.profile_pic  %}
+                                                        <img src="{{  thread.second_person.get_business.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img" style="max-width: 50px; max-height: 50px;">
+                                                    {% else %}
+                                                        <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="rounded-circle user_img" style="max-width: 50px; max-height: 50px;">
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                            <div class="d-flex mb-4 received">
+                                            <div class="img_cont_msg">
+                                                {% if thread.first_person == user %}
+                                                    {% if thread.second_person.get_freelancer.profile_pic  %}
+                                                        <img src="{{  thread.second_person.get_freelancer.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img" style="max-width: 50px; max-height: 50px;">
+                                                    {% elif thread.second_person.get_business.profile_pic  %}
+                                                        <img src="{{  thread.second_person.get_business.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img" style="max-width: 50px; max-height: 50px;">
+                                                    {% else %}
+                                                        <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="rounded-circle user_img" style="max-width: 50px; max-height: 50px;">
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if thread.first_person.get_freelancer.profile_pic  %}
+                                                        <img src="{{  thread.first_person.get_freelancer.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img" style="max-width: 50px; max-height: 50px;">
+                                                    {% elif thread.second_person.get_business.profile_pic  %}
+                                                        <img src="{{  thread.first_person.get_business.profile_pic.url }}" alt="Profile Picture" class="rounded-circle user_img" >
+                                                    {% else %}
+                                                        <img src="{% static 'jobs/media/profile_pic.png' %}" alt="Profile Picture" class="rounded-circle user_img" style="max-width: 50px; max-height: 50px;">
+                                                    {% endif %}
+                                                    {% endif %}
+                                            </div>
+                                            <div class="msg_cotainer">
+                                                {{ chat.message }}
+                                                <span class="msg_time">{{ chat.timestamp|date:"d D" }}, {{ chat.timestamp|time:"H:i" }}</span>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
+
+
+                                    <!------- messages ------->
+                                </div>
+
+					        </div>
+                        {% endfor %}
+                        <div class="card-footer">
+                                <form id="send-message-form">
+                                    <div class="input-group">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+                                        </div>
+                                        <input type="text" name="" id="input-message" class="form-control type_msg" placeholder="Type your message...">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary" type="submit">
+                                                <span class="input-group-text send_btn">
+                                                    <i class="fas fa-location-arrow"></i>
+                                                </span>
+                                            </button>
+
+                                        </div>
+                                </div>
+                                </form>
+                            </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+
+        <script src="{% static 'chat/js/messages.js' %}"></script>
+
+	</body>
+</html>

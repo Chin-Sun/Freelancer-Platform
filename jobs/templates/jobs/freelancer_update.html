@@ -1,0 +1,29 @@
+{% extends "jobs/base.html" %}
+
+{% load i18n %}
+
+{% load crispy_forms_filters %}
+
+{% block head_title %}{% trans "Update Profile" %}{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1>{% trans "Update Freelancer" %}</h1>
+
+    <p>Want to return to profile? Then please click on <a href="{% url 'profile' %}" style="text-decoration: none;">freelancer profile</a>.</p>
+</div>
+<div>
+    <div class="col-md-6 offset-md-3">
+        <form class="signup" id="u_form" method="post" action="{% url 'update-freelancer' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ u_form|crispy }}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <div class="d-grid mt-3">
+                <button class="btn btn-dark" type="submit">{% trans "update Profile" %}</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

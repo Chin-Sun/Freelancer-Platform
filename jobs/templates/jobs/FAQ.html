@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FAQ Page</title>
+    <link rel="stylesheet" type="text/css" href="{%static 'jobs/css/FAQ.css' %}">
+    <link rel="icon" href="{% static 'jobs/media/logo.png' %}" type="image/icon type">
+  </head>
+  <body>
+    <div class="header">
+      <div style="padding-left: 2%;"><a class="text-light" href="{% url 'home' %}" style="text-decoration: none; color: aliceblue;">Home</a></div>
+      </div>
+    <h1 class="title">Frequently Asked Questions</h1>
+    <div class="faq-container">
+      <div class="faq-section">
+        <div class="faq-question-container">
+          <h2 class="faq-question">What is the purpose of this website?</h2>
+          <div class="plus-icon">+</div>
+        </div>
+        <p class="faq-answer">This website is designed to conncet freelancers and employers.</p>
+      </div>
+      <div class="faq-section">
+        <div class="faq-question-container">
+          <h2 class="faq-question">How do I contact the website owner?</h2>
+          <div class="plus-icon">+</div>
+        </div>
+        <p class="faq-answer">You can contact the website owner by clicking on the "Contact" link at the bottom of the page.</p>
+      </div>
+      <div class="faq-section">
+        <div class="faq-question-container">
+          <h2 class="faq-question">What is the refund policy?</h2>
+          <div class="plus-icon">+</div>
+        </div>
+        <p class="faq-answer">Our refund policy is outlined in the "Terms and Conditions" section of the website.</p>
+      </div>
+    </div>
+    <h1 class="title">Write to us</h1>
+    <form class="contact-form">
+      <p>Do you have other questions?</p>
+      <textarea rows="4" cols="50"></textarea>
+      <br><br>
+      <input type="submit" value="Submit">
+    </form>
+    <script src="{%static 'jobs/js/FAQ.js' %}"></script>
+  </body>
+</html>
