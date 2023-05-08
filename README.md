@@ -22,4 +22,5 @@ comfortably.
 This web application is implemented by Django and HTML, CSS and Javascript for the front-end.
 
 ## Demo for our project
-[![Demo CountPages alpha](https://share.gifyoutube.com/KzB6Gb.gif)](https://youtu.be/2EKIGCL_9A8)
+[![Demo CountPages alpha](https://share.gifyoutube.com/KzB6Gb.gif)](https://www.youtube.com/watch?v=2EKIGCL_9A8)
+[![Demo CountPages alpha](https://share.gifyoutube.com/KzB6Gb.gif)](https://www.youtube.com/watch?v=ek1j272iAmc)
