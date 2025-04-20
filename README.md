@@ -52,8 +52,8 @@ The **Freelancer Platform** is a full-featured, web-based application designed t
 | **Backend** | Python, Django |
 | **Frontend** | HTML, CSS, JavaScript |
 | **Authentication** | OAuth 2.0 |
-| **Database** | PostgreSQL (or SQLite for dev) |
-| **Deployment** | [Optional: Docker, AWS, Heroku] |
+| **Database** | SQLite |
+| **Deployment** | Heroku |
 
 ---
 
