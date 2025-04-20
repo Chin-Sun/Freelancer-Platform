@@ -3,8 +3,7 @@
 
 # 🌐 Freelancer Platform – Scalable Web Solution for Service Matching
 
-📅 **Project Duration:** [Insert Date]  
-🔗 **GitHub Repository:** [Freelancer-Platform](https://github.com/Chin-Sun/...) *(update with actual link if different)*
+📅 **Project Duration:** 2 months
 
 ## 📌 Overview
 
